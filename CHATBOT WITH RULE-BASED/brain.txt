@@ -1,0 +1,6 @@
+buy,Ok! We have lot of properties for buy Please Select Size..
+500 sq yard house, Ok please Provide your contact details one of out representative contact you with 500 sq yard house details
+rent,Ok! We have lot of properties for Rent Please Select Size..
+100 sqyd rent,Ok we have 2 choices for Rent 
+sell,Ok! We have lot of properties for buy Please Select..
+market value, Ok I understand you want to know Market Values we have 2 avaliable..

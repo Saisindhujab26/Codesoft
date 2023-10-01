@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Real Estate Chatbot</title>
+    <style>
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    overflow: hidden;
+    line-height: 1.6;
+}
+
+#chatbox {
+    width: 300px;
+    height: 500px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    right: 20px;
+    bottom: 90px;
+    background-color: #fff;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease-in-out;
+}
+
+#toggleChatbox {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #28a745;
+    color: #fff;
+    font-size: 35px;
+    text-align: center;
+    line-height: 60px;
+    cursor: pointer;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+#toggleChatbox:hover {
+    background-color: #218838;
+}
+
+#toggleChatbox:active {
+    transform: scale(0.95);
+}
+
+#user_input {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: #f0f0f0;
+    border-top: 1px solid #ccc;
+}
+
+#user_input input {
+    flex-grow: 1;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+}
+
+.option {
+    background-color: #28a745;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.option:hover {
+    background-color: #218838;
+}
+
+.message {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.user {
+    background-color: #e9ecef;
+    align-self: flex-end;
+}
+
+.bot {
+    background-color: #d4edda;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Improved Styles */
+#messages,
+#options {
+    padding: 20px;
+}
+
+#messages {
+    flex: 1;
+    overflow-y: auto; 
+}
+
+#options {
+    display: flex;
+    justify-content: space-around;
+    margin-top: auto;
+    flex-wrap: wrap;
+}
+
+.message {
+    max-width: 70%;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+}
+
+form {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+}
+
+input[type="text"],
+input[type="email"] {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: calc(100% - 22px);
+    box-sizing: border-box;
+}
+
+button {
+    cursor: pointer;
+    background-color: #28a745;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+#contactForm {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: appear 0.5s forwards;
+}
+.loading-spinner {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border-top: 4px solid #000;
+    animation: spin 1s linear infinite;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    opacity: 0; 
+    visibility: hidden; 
+}
+
+.loading-spinner.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes appear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+#taskText {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 44px; /* Or any size you want */
+    font-weight: bold;
+    color: #333; /* Or any color you want */
+}
+#chatbox-header {
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            font-weight: bold;
+            box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+        #chatbox {
+            border-top: none; /* Remove because the header has a bottom border */
+        }
+        #user_input {
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+        
+         /* Add a slight margin to the message bubbles for better separation */
+         .message {
+            margin: 10px;
+        }
+
+        .bot:before {
+            content: 'AI Bot: ';
+        }
+
+        .user:before {
+            content: 'User: ';
+            float: right;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="taskText">TASK 1<br>CHATBOT WITH RULE-BASED<br>RESPONSES</div>
+    
+    <div id="chatbox">
+        <!-- Chatbox Header -->
+        <div id="chatbox-header">Real Estate Chatbot</div>
+        
+        <div id="messages"></div>
+        <div id="loadingSpinner" class="loading-spinner"></div>
+        <div id="options"></div>
+        <div id="user_input">
+            <input type="text" placeholder="Type a message..." autofocus>
+        </div>
+    </div>
+    <div id="toggleChatbox">+</div>
+    <script>
+        let chatHistory = [];
+
+        function renderOptions(options) {
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = 'option';
+                button.innerText = option;
+                button.addEventListener('click', function() {
+                    sendOption(option);
+                });
+                optionsDiv.appendChild(button);
+            });
+        }
+
+        function sendOption(option) {
+            addMessage(option, 'user');
+            sendMessage(option);
+        }
+
+        function addMessage(message, type) {
+            let messagesDiv = document.getElementById('messages');
+            let messageObj = {
+                type: type,
+                message: message
+            };
+            chatHistory.push(messageObj);
+            messagesDiv.innerHTML += `<div class="message ${type}">${type === 'user' ? ' ' : ' '}${message}</div>`;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        document.getElementById('user_input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && this.value.trim() !== '') {
+                let user_message = this.value.trim();
+                this.value = '';
+                addMessage(user_message, 'user');
+                sendMessage(user_message);
+            }
+        });
+        document.getElementById('toggleChatbox').addEventListener('click', function () {
+    let chatbox = document.getElementById('chatbox');
+    let toggleIcon = document.getElementById('toggleChatbox');
+    if (chatbox.style.display === 'none') {
+        chatbox.style.display = 'flex';
+        toggleIcon.innerHTML = '&ndash;';
+    } else {
+        chatbox.style.display = 'none';
+        toggleIcon.innerHTML = '+';
+    }
+});
+
+function sendMessage(message) {
+    toggleLoadingSpinner(true); // Show loading spinner
+    fetch('/ask', {
+        method: 'POST',
+        body: new URLSearchParams({ 'user_message': message }),
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            toggleLoadingSpinner(false); // Hide loading spinner
+            addMessage(data.response, 'bot');
+            if (data.response.includes("Ok! We understand your requirements.")) {
+                showContactForm();
+            }
+            if (data.options) {
+                renderOptions(data.options);
+            }
+        })
+        .catch(err => {
+            toggleLoadingSpinner(false); // Hide loading spinner in case of error
+            addMessage('Error occurred while fetching response!', 'bot');
+        });
+}
+
+function toggleLoadingSpinner(show) {
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    if(show) {
+        loadingSpinner.classList.add('active');
+    } else {
+        loadingSpinner.classList.remove('active');
+    }
+}
+
+
+        function showContactForm() {
+            let messagesDiv = document.getElementById('messages');
+            let formHTML = `
+                <form id="contactForm">
+                    <input type="text" name="name" placeholder="Your Name" required />
+                    <input type="email" name="email" placeholder="Your Email" required />
+                    <input type="text" name="contact" placeholder="Your Contact" required />
+                    <input type="hidden" name="chat" value='${JSON.stringify(chatHistory)}' />
+                    <button type="button" onclick="submitForm()">Submit</button>
+                </form>`;
+            messagesDiv.innerHTML += formHTML;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        document.querySelector('#user_input input').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter' && this.value.trim() !== '') {
+        let user_message = this.value.trim();
+        this.value = '';
+        addMessage(user_message, 'user');
+        sendMessage(user_message);
+    }
+});
+
+
+        function submitForm() {
+            let form = document.getElementById('contactForm');
+            let formData = new FormData(form);
+
+            fetch('/save_lead', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    addMessage('Your details have been submitted.', 'bot');
+                } else {
+                    addMessage('There was an error submitting your details.', 'bot');
+                }
+            });
+        }
+
+        // Initial options rendering
+        renderOptions(['Buy', 'Sell', 'Rent', 'Invest']);
+    </script>
+</body>
+</html>
