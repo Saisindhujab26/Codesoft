@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Professional Tic Tac Toe</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background: #fff;
+            width: 350px;
+            margin: auto;
+            margin-top: 50px;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        p {
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 5px;
+            margin: auto;
+        }
+
+        .cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button {
+            width: 100px;
+            height: 100px;
+            font-size: 24px;
+            cursor: pointer;
+            outline: none;
+            background: transparent;
+            border: 1px solid #ccc;
+            transition: 0.3s;
+            border-radius: 4px;
+        }
+
+        .button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .button:disabled {
+            background-color: #d4d4d4;
+            cursor: not-allowed;
+        }
+
+        .message,
+        .scoreboard,
+        .reset {
+            margin-top: 20px;
+        }
+
+        .reset .button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+        }
+
+        .reset .button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>TIC-TAC-TOE AI</h1>
+        <p>Play against the AI!</p>
+        <div class="board">
+            {% for i in range(9) %}
+            <form method="POST" action="/move" class="cell">
+                <input type="hidden" name="position" value="{{ i }}">
+                <button type="submit" class="button"
+                    {% if board[i] != "" or message != "" %} disabled {% endif %}>{{ board[i] }}</button>
+            </form>
+            {% endfor %}
+        </div>
+        <div class="message">{{ message }}</div>
+        <div class="scoreboard">
+            <p>User wins: {{ user_wins }}</p>
+            <p>AI wins: {{ ai_wins }}</p>
+        </div>
+        <form method="GET" action="/reset" class="reset">
+            <button type="submit" class="button">Reset</button>
+        </form>
+    </div>
+    <script>
+        let message = '{{ message }}';
+        if (message !== "") {
+            let buttons = document.querySelectorAll('.board .button');
+            buttons.forEach(button => button.disabled = true);
+        }
+        document.querySelector('.reset .button').disabled = false;
+    </script>
+</body>
+
+</html>
